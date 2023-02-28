@@ -1,19 +1,28 @@
 import React, { useState } from "react";
+import { connectionApi } from "../api/connectionApi";
 
 const Form = () => {
   const [url, setUrl] = useState("");
 
-  const handlerSubmit = (e) => {
+  const handlerSubmit = async (e) => {
     e.preventDefault();
     const urlRegex = /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
-
-    if (!url || !urlRegex.test(url)) {
-      return alert("Introduce url válida");
+    try {
+      if (!url || !urlRegex.test(url)) {
+        throw new Error("Introduzca url válida");
+      }
+      const data = await connectionApi.post("/analyse", {
+        body: {
+          url,
+        },
+      });
+      console.log(data);
+      setUrl("");
+    } catch (error) {
+      alert(error);
+      setUrl("");
     }
-    setUrl("");
   };
-
-  console.log(url);
 
   return (
     <div>
