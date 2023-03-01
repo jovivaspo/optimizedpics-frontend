@@ -35,22 +35,50 @@ h1 {
   line-height: 1.1;
 }
 
+form{
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  gap:0.7rem
+}
+
+input {
+  height: 40px ;
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid #959494;
+  width: 65%;
+  font-size: 16px;
+  padding-left: 0.5rem;
+  outline: none;
+}
+
+input:hover{
+  outline: none;
+  border-bottom: 1px solid #1a1a1a;
+}
+
 button {
-  border-radius: 8px;
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  border: 1px solid #959494;;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   color: white;
+  background-color: transparent;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #1a1a1a;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+
+@media only screen and (min-width: 700px) {
+ input{
+  width: 660px;
+ }
 }

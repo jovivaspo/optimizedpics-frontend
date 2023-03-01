@@ -25,17 +25,19 @@ const Form = () => {
   };
 
   return (
-    <div>
+   
       <form onSubmit={handlerSubmit}>
         <input
           type="text"
           name="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          placeholder="Introduce una url"
+          autoComplete="off"
         />
-        <button type="submit">Analyse</button>
+        <button type="submit">A</button>
       </form>
-    </div>
+   
   );
 };
 
