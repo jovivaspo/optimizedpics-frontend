@@ -20,6 +20,21 @@ export const webSlice = createSlice({
       state.status = "analyzed";
       state.imagesDefault = payload.imagesDefault;
     },
+    onTimeLoad: (state, { payload }) => {
+      const image = state.imagesDefault.find(
+        (el) => el.image === payload.image
+      );
+
+      if (image) {
+        const imageUpdated = { ...image, timeLoad: payload.timeLoad };
+
+        const index = state.imagesDefault.findIndex(
+          (el) => el.image === payload.image
+        );
+
+        state.imagesDefault[index] = imageUpdated;
+      }
+    },
     onOptimizing: (state) => {
       state.status = "optimizing";
     },
@@ -39,6 +54,7 @@ export const webSlice = createSlice({
 export const {
   onAnalysing,
   onReadyImagesDefault,
+  onTimeLoad,
   onOptimizing,
   onReadyImagesOptimized,
   onError,

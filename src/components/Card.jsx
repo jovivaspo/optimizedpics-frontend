@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { onTimeLoad } from "../store/web/webSlice";
 
 const Card = ({ imageDefault }) => {
-  const start = performance.now();
-
+  const [start, setStart] = useState(0);
   const [timeLoad, setTimeLoad] = useState(0);
 
-  const handleTimeLoad = () => {
-    setTimeLoad(performance.now() - start - 0.015);
-  };
+  useEffect(() => {
+    setStart(performance.now());
+  }, []);
+
+  const dispatch = useDispatch();
+
+  function handleTimeLoad() {
+    setTimeLoad(performance.now() - start);
+    dispatch(
+      onTimeLoad({
+        image: imageDefault.image,
+        timeLoad: performance.now() - start,
+      })
+    );
+  }
 
   return (
     <div className="item-gallery card">
@@ -19,7 +32,7 @@ const Card = ({ imageDefault }) => {
             objectFit:
               (imageDefault.width / imageDefault.height < 1.2 &&
                 imageDefault.width / imageDefault.height > 0.8) ||
-              imageDefault.width / imageDefault.height > 1.8 ||
+              imageDefault.width / imageDefault.height > 2 ||
               imageDefault.width / imageDefault.height < 0.2
                 ? "contain"
                 : "fill",
