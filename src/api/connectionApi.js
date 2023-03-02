@@ -26,7 +26,7 @@ const customFetch = async (endpoint, options) => {
     const json = await res.json();
     return json;
   } catch (error) {
-    return error;
+    return { error: "Algo salió mal... inténtelo más tarde" };
   }
 };
 
