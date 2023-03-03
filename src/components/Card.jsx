@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { evaluationSize, evaluationformat } from "../helpers/evaluationCriteria";
 import { onTimeLoad } from "../store/web/webSlice";
 
 const Card = ({ imageDefault }) => {
@@ -41,13 +42,13 @@ const Card = ({ imageDefault }) => {
       </div>
       <div className="image-stats">
         <button className="btn-optimize">Optimizar</button>
-        <h3>ESTADÍSTICAS</h3>
+        <h3>Estadísticas</h3>
         <p>Tiempo de carga</p>
         <span>{(timeLoad / 1000).toFixed(3)} s</span>
         <p>Peso</p>
-        <span>{imageDefault.size} KB</span>
+        <span>{imageDefault.size} KB  <strong className="evaluation">{evaluationSize([parseInt(imageDefault.size)]) }</strong></span>
         <p>Formato</p>
-        <span>{imageDefault.format}</span>
+        <span>{imageDefault.format} <strong className="evaluation">{evaluationformat[imageDefault.format.toLowerCase()]}</strong></span>
         <p>Dimensiones</p>
         <div>
           <span>Ancho: {imageDefault.width}px</span>

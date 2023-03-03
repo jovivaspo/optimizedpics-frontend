@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: null,
-  url: "",
+  url: localStorage.getItem("url")? JSON.parse(localStorage.getItem("url"))  : "",
   errorMessage: undefined,
-  imagesDefault: [],
+  imagesDefault: localStorage.getItem("imagesDefault")? JSON.parse( localStorage.getItem("imagesDefault")) : [],
   imagesOptimized: [],
 };
 
@@ -40,14 +40,20 @@ export const webSlice = createSlice({
     },
     onReadyImagesOptimized: (state, { payload }) => {
       state.status = "optimized";
-      state.imagesOptimized = payload;
+      state.imagesOptimized = payload.imagesOptimized;
     },
     onError: (state, { payload }) => {
       console.log(payload);
       state.status = "error";
       state.errorMessage = payload.error;
     },
-    onReset: () => initialState,
+    onReset: (state) => {
+      state.status = null
+      state.url = ""
+      state.errorMessage = undefined
+      state.imagesDefault =  []
+      state.imagesOptimized = []
+    },
   },
 });
 

@@ -4,11 +4,12 @@ import {
   onAnalysing,
   onError,
   onReadyImagesDefault,
+  onReadyImagesOptimized,
   onReset,
 } from "../store/web/webSlice";
 
 export const useWebStore = () => {
-  const { status, url, errorMessage, imagesDefault, imagesOptimized } =
+  const web =
     useSelector((state) => state.web);
   const dispatch = useDispatch();
 
@@ -23,6 +24,8 @@ export const useWebStore = () => {
       }
 
       dispatch(onReadyImagesDefault({ imagesDefault }));
+      localStorage.setItem("url",JSON.stringify(url))
+      localStorage.setItem("imagesDefault", JSON.stringify(imagesDefault))
     } catch (error) {
       dispatch(onError({ message: "Ups, algo salió mal..." }));
       setTimeout(() => {
@@ -31,5 +34,30 @@ export const useWebStore = () => {
     }
   };
 
-  return { startAnalyse };
+  const startOptimizing = async ({images}) =>{
+    dispatch(onOptimizing())
+    try{
+      const data = await connectionApi.post("/optimize", {
+        body:images
+      })
+      console.log(data)
+      
+      if (data.error) {
+        return dispatch(onError({ error: data.error }));
+      }
+      const imagesOptimized = {data}
+      dispatch(onReadyImagesOptimized({imagesOptimized}))
+      localStorage.setItem('imagesOptimized', JSON.stringify(imagesOptimized))
+
+    }catch(error){
+      dispatch(onError({ message: "Ups, algo salió mal..." }));
+      setTimeout(() => {
+        dispatch(onReset());
+      }, 4000);
+    }
+
+
+  }
+
+  return { startAnalyse, startOptimizing };
 };
