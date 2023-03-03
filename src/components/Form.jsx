@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { connectionApi } from "../api/connectionApi";
 import { useWebStore } from "../hooks/useWebStore";
 import { onError, onReset } from "../store/web/webSlice";
+import "../styles/form.css";
 
 const Form = () => {
   const [url, setUrl] = useState("");
   const [errorVisible, setErrorVisible] = useState(false);
   const { startAnalyse } = useWebStore();
-  const web = useSelector(state => state.web)
-  const dispatch = useDispatch()
+  const web = useSelector((state) => state.web);
+  const dispatch = useDispatch();
 
   const errorRef = useRef();
 
@@ -21,15 +21,15 @@ const Form = () => {
 
   const handlerSubmit = (e) => {
     e.preventDefault();
-    if(url === web.url){
-      return false
+    if (url === web.url) {
+      return false;
     }
     const urlRegex = /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/;
     if (!url || !urlRegex.test(url)) {
       return setErrorVisible(true);
     }
-    dispatch(onReset())
-    localStorage.clear()
+    dispatch(onReset());
+    localStorage.clear();
     startAnalyse({ url });
   };
 

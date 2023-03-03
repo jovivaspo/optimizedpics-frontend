@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from "react";
+import "../styles/card.css";
+import cloudinary from "../assets/cloudinary.svg";
+
 import { useDispatch } from "react-redux";
-import { evaluationSize, evaluationformat } from "../helpers/evaluationCriteria";
+import {
+  evaluationSize,
+  evaluationformat,
+} from "../helpers/evaluationCriteria";
 import { onTimeLoad } from "../store/web/webSlice";
+import { useWebStore } from "../hooks/useWebStore";
 
 const Card = ({ imageDefault }) => {
   const [start, setStart] = useState(0);
   const [timeLoad, setTimeLoad] = useState(0);
+  const { startOptimizing } = useWebStore();
+
+  const optimized = imageDefault.image.includes("https://res.cloudinary.com");
 
   useEffect(() => {
     setStart(performance.now());
   }, []);
 
   const dispatch = useDispatch();
+
+  const handlerOptimizeOne = () => {
+    startOptimizing({ images: [imageDefault] });
+  };
 
   function handleTimeLoad() {
     setTimeLoad(performance.now() - start);
@@ -24,7 +38,7 @@ const Card = ({ imageDefault }) => {
   }
 
   return (
-    <div className="item-gallery card">
+    <div className={`item-gallery card ${optimized && "card-optimized"}`}>
       <div className="card-head">
         <img
           src={imageDefault.image}
@@ -41,14 +55,35 @@ const Card = ({ imageDefault }) => {
         />
       </div>
       <div className="image-stats">
-        <button className="btn-optimize">Optimizar</button>
+        <button
+          className="btn-optimize"
+          onClick={handlerOptimizeOne}
+          disabled={optimized}
+        >
+          Optimizar
+        </button>
+        {optimized && (
+          <img src={cloudinary} alt="cloudinary" className="logo-cloudinary" />
+        )}
         <h3>Estadísticas</h3>
         <p>Tiempo de carga</p>
         <span>{(timeLoad / 1000).toFixed(3)} s</span>
         <p>Peso</p>
-        <span>{imageDefault.size} KB  <strong className="evaluation">{evaluationSize([parseInt(imageDefault.size)]) }</strong></span>
+        <span>
+          {imageDefault.size} KB{" "}
+          <img
+            className="icon-evaluation"
+            src={evaluationSize([parseInt(imageDefault.size)])}
+          />
+        </span>
         <p>Formato</p>
-        <span>{imageDefault.format} <strong className="evaluation">{evaluationformat[imageDefault.format.toLowerCase()]}</strong></span>
+        <span>
+          {imageDefault.format}{" "}
+          <img
+            className="icon-evaluation"
+            src={evaluationformat[imageDefault.format.toLowerCase()]}
+          />
+        </span>
         <p>Dimensiones</p>
         <div>
           <span>Ancho: {imageDefault.width}px</span>

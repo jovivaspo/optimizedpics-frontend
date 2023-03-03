@@ -1,23 +1,25 @@
+import fire from "../assets/fire.svg";
+import happy from "../assets/happy.svg";
+import bad from "../assets/bad.svg";
+
 export const evaluationformat = {
-    svg:"optimo",
-    webp:"optimo",
-    avif:"optimo",
-    png:"aceptable",
-    jpg:"aceptable",
-    jpeg:"aceptable",
-    gif:"aceptable",
-    ico:"aceptable",
-    psd:"mejorable",
-    bmp:"mejorable",
-    tiff:"mejorable"
-}
+  svg: fire,
+  webp: fire,
+  avif: fire,
+  png: happy,
+  jpg: happy,
+  jpeg: happy,
+  gif: happy,
+  ico: happy,
+  psd: bad,
+  bmp: bad,
+  tiff: bad,
+};
 
 export const evaluationSize = (size) => {
-   if(size < 50) return "optimo"
-   if(size > 51 && size <150) return "aceptable"
-   return "mejorable"
-}
+  if (size < 50) return fire;
+  if (size > 51 && size < 150) return happy;
+  return bad;
+};
 
-export const evaluationTime = (time)=> {
-
-}
+export const evaluationTime = (time) => {};
