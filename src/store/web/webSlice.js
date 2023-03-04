@@ -2,10 +2,17 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: null,
-  url: localStorage.getItem("url")? JSON.parse(localStorage.getItem("url"))  : "",
+  url: localStorage.getItem("url")
+    ? JSON.parse(localStorage.getItem("url"))
+    : "",
   errorMessage: undefined,
-  imagesDefault: localStorage.getItem("imagesDefault")? JSON.parse( localStorage.getItem("imagesDefault")) : [],
-  imagesOptimized: [],
+  imagesDefault: localStorage.getItem("imagesDefault")
+    ? JSON.parse(localStorage.getItem("imagesDefault"))
+    : [],
+  imagesOptimizing: [],
+  imagesOptimized: localStorage.getItem("imagesOptimized")
+    ? JSON.parse(localStorage.getItem("imagesOptimized"))
+    : [],
 };
 
 export const webSlice = createSlice({
@@ -35,12 +42,25 @@ export const webSlice = createSlice({
         state.imagesDefault[index] = imageUpdated;
       }
     },
-    onOptimizing: (state) => {
+    onOptimizing: (state, { payload }) => {
       state.status = "optimizing";
+      state.imagesOptimizing = [
+        ...state.imagesOptimizing,
+        ...payload.imagesOptimizing,
+      ];
     },
     onReadyImagesOptimized: (state, { payload }) => {
       state.status = "optimized";
-      state.imagesOptimized = payload.imagesOptimized;
+      state.imagesOptimized = [
+        ...state.imagesOptimized,
+        ...payload.imagesOptimized,
+      ];
+
+      state.imagesOptimized.forEach(({ image }) => {
+        state.imagesOptimizing = state.imagesOptimizing.filter((img) => {
+          return img.image !== image;
+        });
+      });
     },
     onError: (state, { payload }) => {
       console.log(payload);
@@ -48,11 +68,12 @@ export const webSlice = createSlice({
       state.errorMessage = payload.error;
     },
     onReset: (state) => {
-      state.status = null
-      state.url = ""
-      state.errorMessage = undefined
-      state.imagesDefault =  []
-      state.imagesOptimized = []
+      state.status = null;
+      state.url = "";
+      state.errorMessage = undefined;
+      state.imagesDefault = [];
+      state.imagesOptimized = [];
+      state.imagesOptimizing = [];
     },
   },
 });

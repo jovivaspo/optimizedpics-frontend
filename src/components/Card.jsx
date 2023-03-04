@@ -1,27 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../styles/card.css";
 import cloudinary from "../assets/cloudinary.svg";
-
-import { useDispatch } from "react-redux";
-import {
-  evaluationSize,
-  evaluationformat,
-} from "../helpers/evaluationCriteria";
+import { useDispatch, useSelector } from "react-redux";
 import { onTimeLoad } from "../store/web/webSlice";
 import { useWebStore } from "../hooks/useWebStore";
+import StatsDefault from "./StatsDefault";
+import StatsOptimized from "./StatsOptimized";
+import CardOptimizing from "./CardOptimizing";
 
 const Card = ({ imageDefault }) => {
   const [start, setStart] = useState(0);
   const [timeLoad, setTimeLoad] = useState(0);
-  const { startOptimizing } = useWebStore();
+  const [optimized, setOptimized] = useState(false);
+  const [optimizing, setOptimizing] = useState(false);
 
-  const optimized = imageDefault.image.includes("https://res.cloudinary.com");
+  const { imagesOptimizing, imagesOptimized } = useSelector(
+    (state) => state.web
+  );
+
+  const { startOptimizing } = useWebStore();
+  const dispatch = useDispatch();
+
+  const preOptimized = imageDefault.image.includes(
+    "https://res.cloudinary.com"
+  );
 
   useEffect(() => {
     setStart(performance.now());
   }, []);
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    setOptimizing(imagesOptimizing.includes(imageDefault));
+  }, [imagesOptimizing]);
+
+  useEffect(() => {
+    const check = imagesOptimized.some(
+      (image) => image.image === imageDefault.image
+    );
+    setOptimized(check);
+  }, [imagesOptimized]);
 
   const handlerOptimizeOne = () => {
     startOptimizing({ images: [imageDefault] });
@@ -38,7 +55,11 @@ const Card = ({ imageDefault }) => {
   }
 
   return (
-    <div className={`item-gallery card ${optimized && "card-optimized"}`}>
+    <div
+      className={`item-gallery card ${preOptimized ? "card-preoptimized" : ""}`}
+    >
+      {<CardOptimizing visible={optimizing} />}
+
       <div className="card-head">
         <img
           src={imageDefault.image}
@@ -58,37 +79,19 @@ const Card = ({ imageDefault }) => {
         <button
           className="btn-optimize"
           onClick={handlerOptimizeOne}
-          disabled={optimized}
+          disabled={preOptimized}
         >
           Optimizar
         </button>
-        {optimized && (
+        {preOptimized && (
           <img src={cloudinary} alt="cloudinary" className="logo-cloudinary" />
         )}
         <h3>Estadísticas</h3>
-        <p>Tiempo de carga</p>
-        <span>{(timeLoad / 1000).toFixed(3)} s</span>
-        <p>Peso</p>
-        <span>
-          {imageDefault.size} KB{" "}
-          <img
-            className="icon-evaluation"
-            src={evaluationSize([parseInt(imageDefault.size)])}
-          />
-        </span>
-        <p>Formato</p>
-        <span>
-          {imageDefault.format}{" "}
-          <img
-            className="icon-evaluation"
-            src={evaluationformat[imageDefault.format.toLowerCase()]}
-          />
-        </span>
-        <p>Dimensiones</p>
-        <div>
-          <span>Ancho: {imageDefault.width}px</span>
-          <span>Alto: {imageDefault.height}px</span>
-        </div>
+        {!optimized ? (
+          <StatsDefault timeLoad={timeLoad} imageDefault={imageDefault} />
+        ) : (
+          <StatsOptimized />
+        )}
       </div>
     </div>
   );

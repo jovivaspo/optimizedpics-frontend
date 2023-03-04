@@ -4,16 +4,16 @@ import { useSelector } from "react-redux";
 import Gallery from "../components/Gallery";
 import Loader from "../components/Loader";
 
-
-
 const DemoPage = () => {
   const { status, url, errorMessage, imagesDefault, imagesOptimized } =
     useSelector((state) => state.web);
   return (
     <div>
       <Form />
-      {status === "analysing" && <Loader/>}
-      {imagesDefault.length > 0 && <Gallery imagesDefault={imagesDefault} url={url}/>}
+      {status === "analysing" && <Loader />}
+      {imagesDefault.length > 0 && (
+        <Gallery imagesDefault={imagesDefault} url={url} />
+      )}
     </div>
   );
 };

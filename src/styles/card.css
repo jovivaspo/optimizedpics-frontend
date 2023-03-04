@@ -1,11 +1,12 @@
 .card {
+  position: relative;
   height: 500px;
   border-radius: 25px;
   box-shadow: 0 0 0 1px rgb(0 0 0 / 7%), 0 2px 4px rgb(0 0 0 / 5%),
     0 12px 24px rgb(0 0 0 / 5%);
 }
 
-.card-optimized {
+.card-preoptimized {
   border: 1px solid #3448c5;
 }
 

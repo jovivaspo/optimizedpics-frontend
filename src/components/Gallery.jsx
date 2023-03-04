@@ -16,7 +16,7 @@ const Gallery = ({ imagesDefault, url }) => {
       </div>
       <div className="gallery">
         {imagesDefault.map((img, index) => {
-          return <Card imageDefault={img} key={index} index={index} />;
+          return <Card imageDefault={img} key={index} />;
         })}
       </div>
     </div>
