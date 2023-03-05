@@ -2,13 +2,11 @@
   "name": "frontend",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://jovivaspo.github.io/optimizedpics-frontend",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "deploy": "gh-pages -d build"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
