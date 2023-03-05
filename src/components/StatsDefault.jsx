@@ -4,14 +4,14 @@ import {
   evaluationformat,
 } from "../helpers/evaluationCriteria";
 
-const StatsDefault = ({ timeLoad, imageDefault }) => {
+const StatsDefault = ({ imageDefault }) => {
   return (
     <>
       <p>Tiempo de carga</p>
-      <span>{(timeLoad / 1000).toFixed(3)} s</span>
+      <span>{imageDefault?.timeLoad} s</span>
       <p>Peso</p>
       <span>
-        {imageDefault.size} KB{" "}
+        {imageDefault.size} kB{" "}
         <img
           className="icon-evaluation"
           src={evaluationSize([parseInt(imageDefault.size)])}

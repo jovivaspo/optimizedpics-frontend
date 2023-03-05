@@ -1,0 +1,23 @@
+.alert {
+  position: fixed;
+  z-index: 20;
+  right: 0;
+  bottom: 1em;
+
+  background-color: #1a1a1a;
+  color: #fff;
+  transition: all 0.3s ease;
+  display: inline-block;
+  padding: 0.5em;
+  border-radius: 5px 0px 0px 5px;
+
+  transform: translate(250%, 0);
+}
+
+.alert p {
+  margin: 0;
+}
+
+.alert.active {
+  transform: translate(0, 0);
+}

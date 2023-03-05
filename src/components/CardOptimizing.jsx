@@ -4,8 +4,7 @@ import "../styles/cardOptimizing.css";
 
 const CardOptimizing = ({ visible }) => {
   return (
-    <div className={`card-optimizing-container ${visible ? "visible" : ""}`}>
-      <div className="card-optimizing"></div>
+    <div className={`card-optimizing ${visible ? "visible" : ""}`}>
       <div className="logo-optimizing-container">
         <img
           src={logo}

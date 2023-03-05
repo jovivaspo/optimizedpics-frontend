@@ -1,7 +1,16 @@
 import React from "react";
+import ContentHome from "../components/ContentHome";
+import HeaderHome from "../components/HeaderHome";
+
+const title = "OptimizedPics";
 
 const HomePage = () => {
-  return <div>HomePage</div>;
+  return (
+    <>
+      <HeaderHome title={title} />
+      <ContentHome />
+    </>
+  );
 };
 
 export default HomePage;

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { connectionApi } from "../api/connectionApi";
 import {
   onAnalysing,
@@ -7,10 +7,10 @@ import {
   onReadyImagesDefault,
   onReadyImagesOptimized,
   onReset,
+  onResetError,
 } from "../store/web/webSlice";
 
 export const useWebStore = () => {
-  const web = useSelector((state) => state.web);
   const dispatch = useDispatch();
 
   const startAnalyse = async ({ url }) => {
@@ -33,7 +33,7 @@ export const useWebStore = () => {
         localStorage.setItem("imagesDefault", JSON.stringify(imagesDefault));
       }, 1500);
     } catch (error) {
-      dispatch(onError({ message: "Ups, algo salió mal..." }));
+      dispatch(onError({ error: "Ups, algo salió mal..." }));
       setTimeout(() => {
         dispatch(onReset());
       }, 4000);
@@ -51,10 +51,11 @@ export const useWebStore = () => {
       if (data.error) {
         dispatch(onError({ error: data.error }));
         return setTimeout(() => {
-          dispatch(onReset());
-        }, 3000);
+          dispatch(onResetError());
+        }, 2500);
       }
       const { imagesOptimized } = data;
+
       setTimeout(() => {
         dispatch(onReadyImagesOptimized({ imagesOptimized }));
         let snapshotImagesOptimized = localStorage.getItem("imagesOptimized")
@@ -70,10 +71,10 @@ export const useWebStore = () => {
         );
       }, 1500);
     } catch (error) {
-      dispatch(onError({ message: "Ups, algo salió mal..." }));
-      setTimeout(() => {
-        dispatch(onReset());
-      }, 4000);
+      dispatch(onError({ error: "Ups, algo salió mal..." }));
+      return setTimeout(() => {
+        dispatch(onResetError());
+      }, 2500);
     }
   };
 

@@ -100,3 +100,19 @@ p {
   width: 150px;
   transform: rotate(30deg);
 }
+
+.btn-url {
+  position: absolute;
+  top: calc(160px + 2em);
+  right: 1em;
+}
+
+.btn-url.copied {
+  color: #3448c5;
+  border: 1px solid #3448c5;
+}
+
+.btn-url:disabled {
+  opacity: 0.5;
+  cursor: auto;
+}

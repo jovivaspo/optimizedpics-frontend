@@ -1,0 +1,7 @@
+.progress-container {
+  position: absolute;
+  top: 300px;
+  right: 1em;
+  width: 80px;
+  height: 80px;
+}

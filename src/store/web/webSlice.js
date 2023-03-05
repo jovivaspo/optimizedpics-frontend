@@ -28,18 +28,35 @@ export const webSlice = createSlice({
       state.imagesDefault = payload.imagesDefault;
     },
     onTimeLoad: (state, { payload }) => {
-      const image = state.imagesDefault.find(
-        (el) => el.image === payload.image
-      );
-
-      if (image) {
-        const imageUpdated = { ...image, timeLoad: payload.timeLoad };
-
-        const index = state.imagesDefault.findIndex(
-          (el) => el.image === payload.image
+      if (payload.imageDefault) {
+        const image = state.imagesDefault.find(
+          (el) => el.image === payload.imageDefault
         );
 
-        state.imagesDefault[index] = imageUpdated;
+        if (image) {
+          const imageUpdated = { ...image, timeLoad: payload.timeLoad };
+
+          const index = state.imagesDefault.findIndex(
+            (el) => el.image === payload.imageDefault
+          );
+
+          state.imagesDefault[index] = imageUpdated;
+        }
+      } else {
+        const { imageOptimized, timeLoad, selected } = payload;
+
+        const image = state.imagesOptimized.find(
+          (el) => el.image === imageOptimized.image
+        );
+        if (image) {
+          const imageUpdated = { ...image, [`time-${selected}`]: timeLoad };
+
+          const index = state.imagesOptimized.findIndex(
+            (el) => el.image === imageOptimized.image
+          );
+
+          state.imagesOptimized[index] = imageUpdated;
+        }
       }
     },
     onOptimizing: (state, { payload }) => {
@@ -67,6 +84,11 @@ export const webSlice = createSlice({
       state.status = "error";
       state.errorMessage = payload.error;
     },
+    onResetError: (state) => {
+      state.status = null;
+      state.errorMessage = undefined;
+      state.imagesOptimizing = [];
+    },
     onReset: (state) => {
       state.status = null;
       state.url = "";
@@ -86,4 +108,5 @@ export const {
   onReadyImagesOptimized,
   onError,
   onReset,
+  onResetError,
 } = webSlice.actions;

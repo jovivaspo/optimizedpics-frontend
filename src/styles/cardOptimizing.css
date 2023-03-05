@@ -1,4 +1,4 @@
-.card-optimizing-container {
+.card-optimizing {
   position: absolute;
   z-index: 10;
   top: 0;
@@ -8,18 +8,17 @@
   border-radius: 25px;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0.4s linear, opacity 0.4s linear;
+  transition: visibility 0.3s linear, opacity 0.3s linear;
 }
 
-.card-optimizing-container.visible {
+.card-optimizing.visible {
   visibility: visible;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .logo-optimizing-container {
   width: 100%;
   position: absolute;
-  z-index: 11;
   top: calc(500px / 2 - 4em);
   display: flex;
   flex-direction: column;
@@ -27,7 +26,6 @@
 }
 
 .logo-optimizing {
-  z-index: 12;
   width: 260px;
 }
 
